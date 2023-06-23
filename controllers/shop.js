@@ -38,4 +38,12 @@ const getCheckout = (req, res, next) => {
     });
 };
 
-module.exports = { getProduct, getIndex, getCart, getCheckout };
+const getOrders = (req, res, next) => {
+    res.render("shop/orders", {
+        layout: "layouts/main-layout",
+        pageTitle: "Orders",
+        path: "/orders",
+    });
+};
+
+module.exports = { getProduct, getIndex, getCart, getCheckout, getOrders };
