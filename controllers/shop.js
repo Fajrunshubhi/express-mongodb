@@ -46,4 +46,23 @@ const getOrders = (req, res, next) => {
     });
 };
 
-module.exports = { getProduct, getIndex, getCart, getCheckout, getOrders };
+const getProductById = (req, res, next) => {
+    const id = req.params.id;
+    Product.findById(id, (product) => {
+        res.render("shop/product-detail", {
+            layout: "layouts/main-layout",
+            pageTitle: "Detail Product",
+            product: product,
+            path: "/products",
+        });
+    });
+};
+
+module.exports = {
+    getProduct,
+    getIndex,
+    getCart,
+    getCheckout,
+    getOrders,
+    getProductById,
+};
