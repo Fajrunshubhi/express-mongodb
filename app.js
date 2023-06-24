@@ -6,6 +6,9 @@ const shopRoutes = require("./routes/shop");
 const expressLayouts = require("express-ejs-layouts");
 const errorController = require("./controllers/error");
 
+// Tambahkan middleware berikut sebelum rute-rute Anda
+app.use(bodyParser.json());
+
 app.set("view engine", "ejs");
 app.set("views", "views");
 app.use(expressLayouts);
