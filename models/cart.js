@@ -18,7 +18,6 @@ class Cart {
             } else {
                 cart = JSON.parse(fileContent);
             }
-            console.log(cart);
             // analyze cart => find existing product
             const existingProductIndex = cart.products.findIndex(
                 (prod) => prod.id === id

@@ -17,21 +17,36 @@ const getProductFromFile = (callback) => {
 };
 
 class Product {
-    constructor(title, imageUrl, description, price) {
+    constructor(id, title, imageUrl, description, price) {
+        this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
         this.description = description;
         this.price = price;
     }
     save() {
-        this.id = Math.random().toString();
         getProductFromFile((products) => {
-            products.push(this);
-            fs.writeFile(p, JSON.stringify(products), (err) => {
-                if (err) {
-                    throw err;
-                }
-            });
+            if (this.id) {
+                const existingProductIndex = products.findIndex(
+                    (p) => p.id === this.id
+                );
+                const updatedProduct = [...products];
+                updatedProduct[existingProductIndex] = this;
+                fs.writeFile(p, JSON.stringify(updatedProduct), (err) => {
+                    if (err) {
+                        throw err;
+                    }
+                });
+            } else {
+                this.id = Math.random().toString();
+                console.log("from else");
+                products.push(this);
+                fs.writeFile(p, JSON.stringify(products), (err) => {
+                    if (err) {
+                        throw err;
+                    }
+                });
+            }
         });
     }
     static fetchAll(callback) {
