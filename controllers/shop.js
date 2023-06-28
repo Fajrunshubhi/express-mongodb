@@ -24,10 +24,34 @@ const getIndex = (req, res, next) => {
 };
 
 const getCart = (req, res, next) => {
-    res.render("shop/cart", {
-        layout: "layouts/main-layout",
-        pageTitle: "My Cart",
-        path: "/cart",
+    Cart.fetchAll((cart) => {
+        Product.fetchAll((products) => {
+            // const cartProducts = [];
+            let cartProducts = { productData: [], totalPrice: 0 };
+
+            for (const product of products) {
+                const cartProductData = cart.products.find(
+                    (prod) => prod.id === product.id
+                );
+                if (cartProductData) {
+                    cartProducts.productData.push({
+                        ...product,
+                        qty: cartProductData.qty,
+                    });
+
+                    cartProducts.totalPrice = cart.totalPrice;
+                }
+            }
+            console.log(cartProducts.productData);
+
+            res.render("shop/cart", {
+                layout: "layouts/main-layout",
+                pageTitle: "My Cart",
+                product: cartProducts,
+                // totalPrice: totalPrice,
+                path: "/cart",
+            });
+        });
     });
 };
 const postCart = (req, res, next) => {
@@ -71,6 +95,14 @@ const getProductById = (req, res, next) => {
     });
 };
 
+const postCartDeleteProduct = (req, res, next) => {
+    const id = req.body.id;
+    Product.findById(id, (product) => {
+        Cart.deleteProduct(id, product.price);
+        res.redirect("/cart");
+    });
+};
+
 module.exports = {
     getProduct,
     getIndex,
@@ -79,4 +111,5 @@ module.exports = {
     getOrders,
     getProductById,
     postCart,
+    postCartDeleteProduct,
 };
