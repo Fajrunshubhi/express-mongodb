@@ -27,29 +27,36 @@ class Product {
         this.price = price;
     }
     save() {
-        getProductFromFile((products) => {
-            if (this.id) {
-                const existingProductIndex = products.findIndex(
-                    (p) => p.id === this.id
-                );
-                const updatedProduct = [...products];
-                updatedProduct[existingProductIndex] = this;
-                fs.writeFile(p, JSON.stringify(updatedProduct), (err) => {
-                    if (err) {
-                        throw err;
-                    }
-                });
-            } else {
-                this.id = Math.random().toString();
-                console.log("from else");
-                products.push(this);
-                fs.writeFile(p, JSON.stringify(products), (err) => {
-                    if (err) {
-                        throw err;
-                    }
-                });
+        // getProductFromFile((products) => {
+        //     if (this.id) {
+        //         const existingProductIndex = products.findIndex(
+        //             (p) => p.id === this.id
+        //         );
+        //         const updatedProduct = [...products];
+        //         updatedProduct[existingProductIndex] = this;
+        //         fs.writeFile(p, JSON.stringify(updatedProduct), (err) => {
+        //             if (err) {
+        //                 throw err;
+        //             }
+        //         });
+        //     } else {
+        //         this.id = Math.random().toString();
+        //         console.log("from else");
+        //         products.push(this);
+        //         fs.writeFile(p, JSON.stringify(products), (err) => {
+        //             if (err) {
+        //                 throw err;
+        //             }
+        //         });
+        //     }
+        // });
+        db.query(
+            "INSERT INTO products (title, price, description, imageUrl) VALUES (?,?,?,?)",
+            [this.title, this.price, this.description, this.imageUrl],
+            (err, result, fields) => {
+                if (err) throw err;
             }
-        });
+        );
     }
     static fetchAll(callback) {
         // getProductFromFile(callback);
@@ -61,12 +68,12 @@ class Product {
         });
     }
     static findById(id, callback) {
-        getProductFromFile((products) => {
-            const product = products.find((item) => {
-                return item.id === id;
-            });
-            callback(product);
-        });
+        // getProductFromFile((products) => {
+        //     const product = products.find((item) => {
+        //         return item.id === id;
+        //     });
+        //     callback(product);
+        // });
     }
     static deleteById(id) {
         getProductFromFile((products) => {

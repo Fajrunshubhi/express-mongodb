@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const db = require("../utils/database");
 
 const getAddProduct = (req, res, next) => {
     res.render("admin/edit-product", {
