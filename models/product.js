@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const Cart = require("./cart");
+const db = require("../utils/database");
 const p = path.join(
     path.dirname(process.mainModule.filename),
     "data",
@@ -51,7 +52,13 @@ class Product {
         });
     }
     static fetchAll(callback) {
-        getProductFromFile(callback);
+        // getProductFromFile(callback);
+        db.query("SELECT * FROM products", (err, result, fields) => {
+            if (err) throw err;
+            // console.log(result);
+            // console.log(fields); // meta data
+            callback(result, fields);
+        });
     }
     static findById(id, callback) {
         getProductFromFile((products) => {

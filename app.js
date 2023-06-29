@@ -5,6 +5,13 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const expressLayouts = require("express-ejs-layouts");
 const errorController = require("./controllers/error");
+const connection = require("./utils/database");
+
+// connection.query("SELECT * FROM products", (err, result, fields) => {
+//     if (err) throw err;
+//     console.log(result);
+//     console.log(fields); // meta data
+// });
 
 // Tambahkan middleware berikut sebelum rute-rute Anda
 app.use(bodyParser.json());
