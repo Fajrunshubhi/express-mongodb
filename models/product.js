@@ -74,6 +74,17 @@ class Product {
         //     });
         //     callback(product);
         // });
+        db.query(
+            "SELECT * FROM products where products.id = ?",
+            [id],
+            (err, result, fields) => {
+                if (err) {
+                    throw err;
+                } else {
+                    callback(result, fields);
+                }
+            }
+        );
     }
     static deleteById(id) {
         getProductFromFile((products) => {

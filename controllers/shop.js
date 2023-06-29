@@ -105,11 +105,20 @@ const getOrders = (req, res, next) => {
 
 const getProductById = (req, res, next) => {
     const id = req.params.id;
-    Product.findById(id, (product) => {
+    // Product.findById(id, (product) => {
+    //     res.render("shop/product-detail", {
+    //         layout: "layouts/main-layout",
+    //         pageTitle: "Detail Product",
+    //         product: product,
+    //         path: "/products",
+    //     });
+    // });
+    Product.findById(id, (product, fields) => {
+        console.log(product[0]);
         res.render("shop/product-detail", {
             layout: "layouts/main-layout",
             pageTitle: "Detail Product",
-            product: product,
+            product: product[0],
             path: "/products",
         });
     });
