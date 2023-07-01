@@ -15,8 +15,19 @@ const postAddProduct = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
-    const product = new Product(null, title, imageUrl, description, price);
-    product.save();
+
+    Product.create({
+        title,
+        price,
+        imageUrl,
+        description,
+    })
+        .then((result) => {
+            console.log(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     res.redirect("/");
 };
 
