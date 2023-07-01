@@ -2,14 +2,6 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 
 const getProduct = (req, res, next) => {
-    // Product.fetchAll((products) => {
-    //     res.render("shop/product-list", {
-    //         layout: "layouts/main-layout",
-    //         pageTitle: "Products Page",
-    //         product: products,
-    //         path: "/products",
-    //     });
-    // });
     Product.fetchAll((products, fields) => {
         // console.log(products);
         // console.log(fields);
@@ -23,17 +15,7 @@ const getProduct = (req, res, next) => {
 };
 
 const getIndex = (req, res, next) => {
-    // Product.fetchAll((products) => {
-    //     res.render("shop/index", {
-    //         layout: "layouts/main-layout",
-    //         pageTitle: "My Shop page",
-    //         product: products,
-    //         path: "shop",
-    //     });
-    // });
     Product.fetchAll((products, fields) => {
-        // console.log(products);
-        // console.log(fields);
         res.render("shop/index", {
             layout: "layouts/main-layout",
             pageTitle: "My Shop page",
