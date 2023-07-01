@@ -4,11 +4,11 @@ const Cart = require("../models/cart");
 const getProduct = (req, res, next) => {
     Product.findAll()
         .then((products) => {
-            res.render("shop/index", {
+            res.render("shop/product-list", {
                 layout: "layouts/main-layout",
-                pageTitle: "My Shop page",
+                pageTitle: "My Shop page Product",
                 product: products,
-                path: "shop",
+                path: "/products",
             });
         })
         .catch((err) => {
@@ -93,23 +93,23 @@ const getOrders = (req, res, next) => {
 
 const getProductById = (req, res, next) => {
     const id = req.params.id;
-    // Product.findById(id, (product) => {
-    //     res.render("shop/product-detail", {
-    //         layout: "layouts/main-layout",
-    //         pageTitle: "Detail Product",
-    //         product: product,
-    //         path: "/products",
-    //     });
-    // });
-    Product.findById(id, (product, fields) => {
-        console.log(product[0]);
-        res.render("shop/product-detail", {
-            layout: "layouts/main-layout",
-            pageTitle: "Detail Product",
-            product: product[0],
-            path: "/products",
+    Product.findAll({
+        where: {
+            id: id,
+        },
+    })
+        .then((product) => {
+            console.log(product);
+            res.render("shop/product-detail", {
+                layout: "layouts/main-layout",
+                pageTitle: "Detail Product",
+                product: product[0],
+                path: "/products",
+            });
+        })
+        .catch((err) => {
+            console.log(err);
         });
-    });
 };
 
 const postCartDeleteProduct = (req, res, next) => {
