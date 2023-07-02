@@ -97,8 +97,17 @@ const postEditProduct = (req, res, next) => {
 
 const deleteProduct = (req, res, next) => {
     const id = req.body.id;
-    Product.deleteById(id);
-    res.redirect("/admin/products");
+    Product.findByPk(id)
+        .then((product) => {
+            return product.destroy();
+        })
+        .then(() => {
+            console.log("Destroyed product success");
+            res.redirect("/admin/products");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 
 module.exports = {
