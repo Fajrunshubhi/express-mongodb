@@ -5,7 +5,8 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const expressLayouts = require("express-ejs-layouts");
 const errorController = require("./controllers/error");
-const sequelize = require("./utils/database");
+
+const mongoConnect = require("./utils/database").mongoConnect;
 
 // Tambahkan middleware berikut sebelum rute-rute Anda
 app.use(bodyParser.json());
@@ -21,14 +22,8 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-sequelize
-    .sync()
-    .then((result) => {
-        console.log(result);
-        app.listen(3000, () => {
-            console.log(`Example app listening at http://localhost:3000`);
-        });
-    })
-    .catch((err) => {
-        console.log(err);
+mongoConnect(() => {
+    app.listen(3000, () => {
+        console.log(`Example app listening at http://localhost:3000`);
     });
+});
