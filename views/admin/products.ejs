@@ -22,7 +22,7 @@
                     >Edit</a
                 >
                 <form action="/admin/delete-product" method="POST">
-                    <input type="number" value="<%= product._id %>" name="id" />
+                    <input type="hidden" value="<%= product._id %>" name="id" />
                     <button class="btn" type="submit">Delete</button>
                 </form>
             </div>

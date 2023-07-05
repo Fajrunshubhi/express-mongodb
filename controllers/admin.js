@@ -17,7 +17,14 @@ const postAddProduct = (req, res, next) => {
     const price = req.body.price;
     const description = req.body.description;
 
-    const product = new Product(title, price, description, imageUrl);
+    const product = new Product(
+        title,
+        price,
+        description,
+        imageUrl,
+        null,
+        req.user._id
+    );
     product
         .save()
         .then((result) => {
@@ -74,7 +81,6 @@ const postEditProduct = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
-    console.log("ini adalah id", id);
 
     const product = new Product(
         title,
@@ -95,20 +101,17 @@ const postEditProduct = (req, res, next) => {
         });
 };
 
-// const deleteProduct = (req, res, next) => {
-//     const id = req.body.id;
-//     Product.findByPk(id)
-//         .then((product) => {
-//             return product.destroy();
-//         })
-//         .then(() => {
-//             console.log("Destroyed product success");
-//             res.redirect("/admin/products");
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// };
+const deleteProduct = (req, res, next) => {
+    const id = req.body.id;
+    Product.deleteById(id)
+        .then(() => {
+            console.log("Destroyed product success");
+            res.redirect("/admin/products");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
 
 module.exports = {
     getAddProduct,
@@ -116,4 +119,5 @@ module.exports = {
     getProducts,
     getEditProduct,
     postEditProduct,
+    deleteProduct,
 };

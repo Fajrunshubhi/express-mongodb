@@ -7,6 +7,7 @@ const expressLayouts = require("express-ejs-layouts");
 const errorController = require("./controllers/error");
 
 const mongoConnect = require("./utils/database").mongoConnect;
+const User = require("./models/users");
 
 // Tambahkan middleware berikut sebelum rute-rute Anda
 app.use(bodyParser.json());
@@ -16,6 +17,16 @@ app.set("views", "views");
 app.use(expressLayouts);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+app.use(async (req, res, next) => {
+    try {
+        const user = await User.findById("64a58c7262c3bcbc9cacf16f");
+        req.user = user;
+        next();
+    } catch (error) {
+        console.log(`Error retrieving user: ${error.message}`);
+    }
+});
 
 app.use("/admin", adminRoutes.router);
 app.use(shopRoutes);
