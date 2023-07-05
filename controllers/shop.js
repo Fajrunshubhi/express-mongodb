@@ -62,18 +62,21 @@ const getIndex = (req, res, next) => {
 //         });
 //     });
 // };
-// const postCart = (req, res, next) => {
-//     const id = req.body.id;
-//     Product.findById(id, (product) => {
-//         Cart.addProduct(id, product.price);
-//     });
-//     res.redirect("/cart");
-//     // res.render("shop/cart", {
-//     //     layout: "layouts/main-layout",
-//     //     pageTitle: "My Cart",
-//     //     path: "/cart",
-//     // });
-// };
+const postCart = (req, res, next) => {
+    const id = req.body.id;
+
+    Product.findById(id)
+        .then((product) => {
+            console.log(product);
+            return req.user.addToCart(product).then((result) => {
+                console.log(result);
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    res.redirect("/cart");
+};
 
 // const getCheckout = (req, res, next) => {
 //     res.render("/checkout", {
@@ -123,6 +126,6 @@ module.exports = {
     // getCheckout,
     // getOrders,
     getProductById,
-    // postCart,
+    postCart,
     // postCartDeleteProduct,
 };
