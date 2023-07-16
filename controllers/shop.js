@@ -42,7 +42,9 @@ const getCart = (req, res, next) => {
                 products: products,
             });
         })
-        .catch((err) => {});
+        .catch((err) => {
+            throw err;
+        });
 };
 const postCart = (req, res, next) => {
     const id = req.body.id;
@@ -56,21 +58,19 @@ const postCart = (req, res, next) => {
     res.redirect("/cart");
 };
 
-// const getCheckout = (req, res, next) => {
-//     res.render("/checkout", {
-//         layout: "layouts/main-layout",
-//         pageTitle: "Checkout",
-//         path: "/checkout",
-//     });
-// };
-
-// const getOrders = (req, res, next) => {
-//     res.render("shop/orders", {
-//         layout: "layouts/main-layout",
-//         pageTitle: "Orders",
-//         path: "/orders",
-//     });
-// };
+const postCartDeleteProduct = (req, res, next) => {
+    const prodId = req.body.id;
+    console.log("ini prod id: ", prodId);
+    req.user
+        .deleteItemFromCart(prodId)
+        .then((result) => {
+            res.redirect("/cart");
+        })
+        .catch((err) => {
+            console.log(err);
+            throw err;
+        });
+};
 
 const getProductById = (req, res, next) => {
     const id = req.params.id;
@@ -88,14 +88,6 @@ const getProductById = (req, res, next) => {
         });
 };
 
-// const postCartDeleteProduct = (req, res, next) => {
-//     const id = req.body.id;
-//     Product.findById(id, (product) => {
-//         Cart.deleteProduct(id, product.price);
-//         res.redirect("/cart");
-//     });
-// };
-
 module.exports = {
     getProduct,
     getIndex,
@@ -105,5 +97,5 @@ module.exports = {
     // getOrders,
     getProductById,
     postCart,
-    // postCartDeleteProduct,
+    postCartDeleteProduct,
 };
