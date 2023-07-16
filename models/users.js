@@ -25,21 +25,62 @@ class User {
         }
     }
 
+    getCart() {
+        const db = getDb();
+        const productIds = this.cart.items.map((i) => {
+            return i._id;
+        });
+
+        return db
+            .collection("products")
+            .find({
+                _id: {
+                    $in: productIds.map((id) => {
+                        return new mongoDb.ObjectId(id);
+                    }),
+                },
+            })
+            .toArray()
+            .then((products) => {
+                return products.map((p) => {
+                    return {
+                        ...p,
+                        quantity: this.cart.items.find((i) => {
+                            return i._id.toString() === p._id.toString();
+                        }).quantity,
+                    };
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     addToCart(product) {
-        // const cartProduct = this.cart.items.findIndex((cp) => {
-        //     return cp._id === product._id;
-        // });
+        const cartProductIndex = this.cart.items.findIndex((cp) => {
+            return cp._id === product._id;
+        });
+        let newQuantity = 1;
+        const updatedCartItems = [...this.cart.items];
+
+        if (cartProductIndex >= 0) {
+            newQuantity = this.cart.items[cartProductIndex].quantity + 1;
+            updatedCartItems[cartProductIndex].quantity = newQuantity;
+        } else {
+            updatedCartItems.push({
+                ...product,
+                quantity: newQuantity,
+            });
+        }
         const updateCart = {
-            items: [
-                { productId: new mongoDb.ObjectId(product._id), quantity: 1 },
-            ],
+            items: updatedCartItems,
         };
         const db = getDb();
         return db.collection("users").updateOne(
             {
                 _id: new mongoDb.ObjectId(this._id),
             },
-            { $set: updateCart }
+            { $set: { cart: updateCart } }
         );
     }
 }

@@ -1,10 +1,9 @@
 <main>
     <h1>Halaman Cart</h1>
     <p>List of all the product in cart</p>
-    <h1>TOTAL PRICE : Rp <%= product.totalPrice %></h1>
-    <% if ( product.productData.length > 0) { %>
+    <% if ( products.length > 0) { %>
     <div class="grid">
-        <% product.productData.forEach(product => { %>
+        <% products.forEach(product => { %>
         <article class="card product-item">
             <header class="card__header">
                 <h1 class="product__title"><%= product.title %></h1>
@@ -18,7 +17,7 @@
                 <p class="product__description">
                     Total Product :
                     <span style="font-weight: bold; font-size: 24px">
-                        <%= product.qty %>
+                        <%= product.quantity %>
                     </span>
                 </p>
             </div>

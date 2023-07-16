@@ -31,46 +31,24 @@ const getIndex = (req, res, next) => {
         });
 };
 
-// const getCart = (req, res, next) => {
-//     Cart.fetchAll((cart) => {
-//         Product.fetchAll((products) => {
-//             // const cartProducts = [];
-//             let cartProducts = { productData: [], totalPrice: 0 };
-
-//             for (const product of products) {
-//                 const cartProductData = cart.products.find(
-//                     (prod) => prod.id === product.id
-//                 );
-//                 if (cartProductData) {
-//                     cartProducts.productData.push({
-//                         ...product,
-//                         qty: cartProductData.qty,
-//                     });
-
-//                     cartProducts.totalPrice = cart.totalPrice;
-//                 }
-//             }
-//             console.log(cartProducts.productData);
-
-//             res.render("shop/cart", {
-//                 layout: "layouts/main-layout",
-//                 pageTitle: "My Cart",
-//                 product: cartProducts,
-//                 // totalPrice: totalPrice,
-//                 path: "/cart",
-//             });
-//         });
-//     });
-// };
+const getCart = (req, res, next) => {
+    req.user
+        .getCart()
+        .then((products) => {
+            res.render("shop/cart", {
+                layout: "layouts/main-layout",
+                path: "/cart",
+                pageTitle: "Your Cart",
+                products: products,
+            });
+        })
+        .catch((err) => {});
+};
 const postCart = (req, res, next) => {
     const id = req.body.id;
-
     Product.findById(id)
         .then((product) => {
-            console.log(product);
-            return req.user.addToCart(product).then((result) => {
-                console.log(result);
-            });
+            return req.user.addToCart(product);
         })
         .catch((err) => {
             console.log(err);
@@ -122,7 +100,7 @@ module.exports = {
     getProduct,
     getIndex,
     // getIndex,
-    // getCart,
+    getCart,
     // getCheckout,
     // getOrders,
     getProductById,

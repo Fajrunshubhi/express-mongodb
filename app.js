@@ -20,7 +20,7 @@ app.use(express.static("public"));
 
 app.use(async (req, res, next) => {
     try {
-        const user = await User.findById("64a58c7262c3bcbc9cacf16f");
+        const user = await User.findById("64b37e739826b6a2cae05462");
         req.user = new User(user.name, user.email, user.cart, user._id);
         next();
     } catch (error) {
