@@ -88,13 +88,43 @@ const getProductById = (req, res, next) => {
         });
 };
 
+const postOrder = (req, res, next) => {
+    req.user
+        .addOrder()
+        .then((result) => {
+            console.log(result);
+            res.redirect("/orders");
+        })
+        .catch((err) => {
+            // console.log(err);
+            // throw err;
+        });
+};
+
+const getOrder = (req, res, next) => {
+    req.user
+        .getOrders()
+        .then((orders) => {
+            console.log(orders);
+            res.render("shop/orders", {
+                layout: "layouts/main-layout",
+                path: "/orders",
+                pageTitle: "Your Orders",
+                orders: orders,
+            });
+        })
+        .catch((err) => {
+            throw err;
+        });
+};
+
 module.exports = {
     getProduct,
     getIndex,
     // getIndex,
     getCart,
-    // getCheckout,
-    // getOrders,
+    getOrder,
+    postOrder,
     getProductById,
     postCart,
     postCartDeleteProduct,

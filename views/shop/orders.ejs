@@ -1,1 +1,34 @@
-<h1>Orders page</h1>
+<main>
+    <h1>Halaman Orders</h1>
+    <p>List of all the product in Orders</p>
+    <% if ( orders.length > 0) { %>
+
+    <div class="grid">
+        <% orders.forEach(order => { %>
+        <div>Id Orders: <%= order._id %></div>
+        <article class="card product-item">
+            <% order.items.forEach(item => { %>
+            <header class="card__header">
+                <h1 class="product__title"><%= item._id %></h1>
+            </header>
+            <div class="card__image">
+                <img src="<%= item.imageUrl %>" alt="<%= item.title %>" />
+            </div>
+            <div class="card__content">
+                <h2 class="product__price"><%= item.price %></h2>
+                <p class="product__description"><%= item.description %></p>
+                <p class="product__description">
+                    Total Product :
+                    <span style="font-weight: bold; font-size: 24px"> </span>
+                </p>
+            </div>
+            <% }) %>
+        </article>
+
+        <% }) %>
+    </div>
+    <% } else { %>
+    <h1>No Product List</h1>
+
+    <% } %>
+</main>
